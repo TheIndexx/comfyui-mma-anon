@@ -1,4 +1,4 @@
-import server
+from ComfyUI import server
 import folder_paths
 import os
 import time

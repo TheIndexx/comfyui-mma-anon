@@ -2,7 +2,7 @@ from ..utils import common_annotator_call, create_node_input_types
 import comfy.model_management as model_management
 import numpy as np
 import warnings
-from controlnet_aux.dwpose import DwposeDetector, AnimalposeDetector
+from ComfyUI.custom_nodes.comfyui_controlnet_aux.src.controlnet_aux.dwpose import DwposeDetector, AnimalposeDetector
 import os
 import json
 

@@ -1226,7 +1226,8 @@ def load_motion_module_gen1(model_name: str, model: ModelPatcher, motion_lora: M
 
 
 def load_motion_module_gen2(model_name: str, motion_model_settings: AnimateDiffSettings = None) -> MotionModelPatcher:
-    model_path = get_motion_model_path(model_name)
+    # model_path = get_motion_model_path(model_name)
+    model_path=model_name
     logger.info(f"Loading motion module {model_name} via Gen2")
     mm_state_dict = comfy.utils.load_torch_file(model_path, safe_load=True)
     # TODO: check for empty state dict?

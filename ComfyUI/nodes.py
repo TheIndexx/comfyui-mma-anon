@@ -512,9 +512,10 @@ class CheckpointLoaderSimple:
 
     CATEGORY = "loaders"
 
-    def load_checkpoint(self, ckpt_name):
-        ckpt_path = folder_paths.get_full_path("checkpoints", ckpt_name)
-        out = comfy.sd.load_checkpoint_guess_config(ckpt_path, output_vae=True, output_clip=True, embedding_directory=folder_paths.get_folder_paths("embeddings"))
+    def load_checkpoint(self, ckpt_name, embedding_dir):
+        ckpt_path = ckpt_name
+        #folder_paths.get_full_path("checkpoints", ckpt_name)
+        out = comfy.sd.load_checkpoint_guess_config(ckpt_path, output_vae=True, output_clip=True, embedding_directory=embedding_dir)
         return out[:3]
 
 class DiffusersLoader:
@@ -592,11 +593,10 @@ class LoraLoader:
 
     CATEGORY = "loaders"
 
-    def load_lora(self, model, clip, lora_name, strength_model, strength_clip):
+    def load_lora(self, model, clip, lora_path, strength_model, strength_clip):
         if strength_model == 0 and strength_clip == 0:
             return (model, clip)
 
-        lora_path = folder_paths.get_full_path("loras", lora_name)
         lora = None
         if self.loaded_lora is not None:
             if self.loaded_lora[0] == lora_path:
@@ -715,7 +715,8 @@ class ControlNetLoader:
     CATEGORY = "loaders"
 
     def load_controlnet(self, control_net_name):
-        controlnet_path = folder_paths.get_full_path("controlnet", control_net_name)
+        #controlnet_path = folder_paths.get_full_path("controlnet", control_net_name)
+        controlnet_path=control_net_name
         controlnet = comfy.controlnet.load_controlnet(controlnet_path)
         return (controlnet,)
 
@@ -1939,9 +1940,11 @@ def init_external_custom_nodes():
     """
     base_node_names = set(NODE_CLASS_MAPPINGS.keys())
     node_paths = folder_paths.get_folder_paths("custom_nodes")
+    print("node_paths", node_paths)
     node_import_times = []
     for custom_node_path in node_paths:
         possible_modules = os.listdir(os.path.realpath(custom_node_path))
+        print("possible_modules", possible_modules)
         if "__pycache__" in possible_modules:
             possible_modules.remove("__pycache__")
 
@@ -1950,6 +1953,7 @@ def init_external_custom_nodes():
             if os.path.isfile(module_path) and os.path.splitext(module_path)[1] != ".py": continue
             if module_path.endswith(".disabled"): continue
             time_before = time.perf_counter()
+            print("module_path", module_path)
             success = load_custom_node(module_path, base_node_names)
             node_import_times.append((time.perf_counter() - time_before, module_path, success))
 

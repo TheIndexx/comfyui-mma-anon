@@ -253,7 +253,8 @@ class VideoCombine:
         unique_id=None,
         manual_format_widgets=None,
         meta_batch=None,
-        vae=None
+        vae=None,
+        output_dir=None
     ):
         if latents is not None:
             images = latents
@@ -291,8 +292,8 @@ class VideoCombine:
             images = iter(images)
         # get output information
         output_dir = (
-            folder_paths.get_output_directory()
-            if save_output
+            output_dir
+            if save_output and output_dir is not None
             else folder_paths.get_temp_directory()
         )
         (

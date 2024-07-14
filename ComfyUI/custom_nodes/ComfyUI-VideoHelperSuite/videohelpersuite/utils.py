@@ -7,7 +7,7 @@ import re
 from collections.abc import Mapping
 import torch
 
-import server
+from ComfyUI import server
 from .logger import logger
 
 BIGMIN = -(2**53-1)

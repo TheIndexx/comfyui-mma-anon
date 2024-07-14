@@ -348,7 +348,9 @@ class VAE:
 
     def encode(self, pixel_samples):
         pixel_samples = self.vae_encode_crop_pixels(pixel_samples)
-        pixel_samples = pixel_samples.movedim(-1,1)
+        print(pixel_samples.shape)
+        pixel_samples_tensor = torch.from_numpy(pixel_samples)
+        pixel_samples = pixel_samples_tensor.movedim(-1,1)
         try:
             memory_used = self.memory_used_encode(pixel_samples.shape, self.vae_dtype)
             model_management.load_models_gpu([self.patcher], memory_required=memory_used)
